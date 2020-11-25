@@ -23,5 +23,8 @@ A partir de una base de datos realizaremos Login
 **BACK END**
 - PHP.
 
+**Libreria de Validación**
+- Libreria aportada por Javier // Añadida mediante Git.
+
 ## Licencia
 [MIT](https://choosealicense.com/licenses/mit/)
