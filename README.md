@@ -17,11 +17,21 @@ A partir de una base de datos realizaremos Login
 ```
 
 **FRONT END**
-- Html.
+- HTML.
 - CSS.
 
 **BACK END**
-- PHP.
+- PHP 7.4.
+- MySQL.
+
+**Desarrollo**
+- http://daw212.sauces.local/proyectoDWES/proyectoTema5/indexProyectoTema5.html.
+
+**1&1**
+- http://daw212.ieslossauces.es/proyectoDWES/proyectoTema5/indexProyectoTema5.html.
+
+**Libreria de Validación**
+- Libreria aportada por Javier // Añadida mediante Git.
 
 ## Licencia
 [MIT](https://choosealicense.com/licenses/mit/)
