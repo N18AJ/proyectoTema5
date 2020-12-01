@@ -44,7 +44,7 @@
                 <article>
                     <header class="major">
                         <a href="../indexProyectoTema5.html"><img src="../webroot/media/images/atras2.png" alt="atras" width="45" class="icono_atras"/></a>
-                        <h3>Ejercicio 00</h3>
+                        <h3>Borrar</h3>
                     </header>
                     <div id="cont">
                         <?php

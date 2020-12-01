@@ -44,7 +44,7 @@
                 <article>
                     <header class="major">
                         <a href="../indexProyectoTema5.html"><img src="../webroot/media/images/atras2.png" alt="atras" width="45" class="icono_atras"/></a>
-                        <h3>Crear</h3>
+                        <h3>Borrado 1&1</h3>
                     </header>
                     <div id="cont">
                         <?php
@@ -54,7 +54,7 @@
                             @description: Mostrar ejercicio01.
                             */
 
-                            highlight_file("../scriptDB/CrearDAW212DBProyectoTema5.sql"); //Mostrar código
+                            highlight_file("../scriptDB/BorrarDAW212DBProyectoTema5_1&1.sql"); //Mostrar código
                         ?>
                     </div> 
                 </article>

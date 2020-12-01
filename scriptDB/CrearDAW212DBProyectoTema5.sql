@@ -14,21 +14,22 @@
         T02_FechaCreacionDepartamento int NOT null,
         T02_VolumenNegocio float NOT null
     )ENGINE = INNODB;
+
     CREATE TABLE IF NOT EXISTS T01_Usuario(
         T01_CodUsuario varchar(15) PRIMARY KEY,
         T01_DescUsuario varchar(250) NOT null,
         T01_Password varchar(64) NOT null,
         T01_Perfil enum('administrador', 'usuario') default 'usuario', -- Valor por defecto usuario
-        T01_FechaHoraUltimaConexion int NOT null,
+        T01_FechaHoraUltimaConexion int null,
         T01_NumConexiones int default 0,
         T01_ImagenUsuario mediumblob
     )ENGINE = INNODB;
 
 -- Crear del usuario --
-    CREATE USER IF NOT EXISTS 'usuarioDAW212DBProyectoTema5'@'%' identified BY 'paso'; 
+    CREATE USER IF NOT EXISTS 'usuarioDAW212DBLoginLogoffTema5'@'%' identified BY 'paso'; 
 
 -- Dar permisos al usuario --
-    GRANT ALL PRIVILEGES ON T02_DAW212DBProyectoTema5.* TO 'usuarioDAW212DBProyectoTema5'@'%'; 
+    GRANT ALL PRIVILEGES ON T02_DAW212DBProyectoTema5.* TO 'usuarioDAW212DBLoginLogoffTema5'@'%'; 
 
 -- Hacer el flush privileges, por si acaso --
     FLUSH PRIVILEGES;

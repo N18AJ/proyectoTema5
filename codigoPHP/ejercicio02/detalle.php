@@ -37,7 +37,7 @@
             <section class="tiles">
                 <article>
                     <header class="major">
-                        <a href="../../indexProyectoTema5.html"><img src="../../webroot/media/images/atras2.png" alt="atras" width="45" class="icono_atras"/></a>
+                        <a href="programa.php"><img src="../../webroot/media/images/atras2.png" alt="atras" width="45" class="icono_atras"/></a>
                         <h3>Ejercicio 01</h3>
                     </header>
                     <div id="cont">

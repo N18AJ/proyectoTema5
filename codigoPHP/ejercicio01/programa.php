@@ -16,15 +16,29 @@
         <link href="https://fonts.googleapis.com/css?family=Caveat&display=swap" rel="stylesheet">
         <style>
             #cont{
-                    margin-left: 10%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
-            input{
-                width: 185px;
-                height: 30px;
+            #botonAceptar{
+                margin:20px;
                 text-align: center;
-                margin-bottom: 15px;
-                font-size: 12pt;
-                margin-left:10px;
+                color: #18B618; 
+                width: 120px; 
+                height: 40px; 
+                font-size: 10pt;
+                border-radius: 10px;
+                border: 2px solid #18B618;
+            }
+            #botonCancelar{
+                margin:20px;
+                text-align: center;
+                color: #E72727; 
+                width: 120px; 
+                height: 40px; 
+                font-size: 10pt;
+                border-radius: 10px;
+                border: 2px solid #E72727;
             }
         </style>
     </head>
@@ -57,8 +71,9 @@
                         <h3>Usuario aceptado</h3>
                                     <!-- Llamada al login-->
                             <form action="<?php ?>" method="post">
-                                <a href="../../indexProyectoTema5.html"><input type="button" name="salir" value="Salir"></a>
-                                <input type="button" name="detalle" value="Detalle" onclick="location='detalle.php'">
+                                <input type="button" id="botonAceptar" name="detalle" value="Detalle" onclick="location='detalle.php'">
+                                
+                                <a href="../../indexProyectoTema5.html"><input type="button" id="botonCancelar" name="salir" value="Salir" onclick="location='logout.php'"></a>
                             </form>
                     </div> 
                 </article>

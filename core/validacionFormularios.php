@@ -20,7 +20,6 @@
  * comprobarAlfanumerico y validarEmail. También he eliminado una función inservible "comprobarCódigo". Este cambio se basa en simplificar la cantidad de código ya que antes los * errores
  * @since version 1.5 mejorada la ortografía de los mensajes de error
  * se escribian cada vez que querías mostrarlos ahora ya los devuelve cada función a la que se ha llamado sin tener que escribir nada.
- * @since 30/11/2020
  * 
  */
 class validacionFormularios {  //ELIMINA EL METODO VALIDATEDATE Y LO INCLUYE EN VALIDAR FECHA, ELIMINACION DE VALIDAR CHECKBOX Y RADIOB, MEJORA GENERAL DE RESPUESTA, INCLUSION DE PARAMETROS PREDEFINIDOS Y MEJORAS SUSTANCIALES EN ALGUNOS METODOS
@@ -91,7 +90,7 @@ class validacionFormularios {  //ELIMINA EL METODO VALIDATEDATE Y LO INCLUYE EN 
 // Return null es correcto, si no muestra el mensaje de error
 // Si es un 1 es obligatorio, si es un 0 no lo es
     /**
-     * @author Javier Nieto y Cristina Núñez
+     * @author Christian Muñiz de la Huerga
      * @function comprobarEntero();
      * @param $integer Número entero a comprobar
      * @param $max Valor máximo del entero
@@ -101,25 +100,19 @@ class validacionFormularios {  //ELIMINA EL METODO VALIDATEDATE Y LO INCLUYE EN 
      */
     public static function comprobarEntero($integer, $max = PHP_INT_MAX, $min = -PHP_INT_MAX, $obligatorio = 0){  //AÑADIDOS VALORES POR DEFECTO Y AHORA DETECTA EL 0
         $mensajeError = null;
-        
         if ($obligatorio == 1 && $integer != '0') {
             $mensajeError = self::comprobarNoVacio($integer);
         }
-        
-        if(($obligatorio == 0 && $integer!=null) || ($obligatorio == 1 && empty($mensajeError))){//COMPROBAMOS QUE SI ES OPCIONAL, NO ESTÉ VACÍO Y SI ES OBLIGATORIO QUE NO HAYA GUARDADO UN MENSAJE DE ERROR ANTERIOR (QUE EL CAMPO NO ESTÉ VACÍO)  
-            $integer = str_replace('.', ',', $integer);//SI SE HA INTRODUCIDO UN NÚMERO CON '.'(FLOAT), SUSTITUIMOS EL PUNTO POR UNA COMA PARA QUE SEA UN STRING
-            if (!is_numeric($integer)){ //SI NO ES UN NÚMERO O STRING NUMÉRICO
-                $mensajeError = "El campo no es un entero. ";
-            }else{
-                if($integer>$max){
-                    $mensajeError = $mensajeError."El número no puede ser mayor que ".$max.".";
-                }
-                if($integer<$min){
-                    $mensajeError = $mensajeError."El número no puede ser menor que ".$min.".";
-                }
+        if ($integer != '0' && !empty($integer) && !filter_var($integer, FILTER_VALIDATE_INT)) {  //HE VARIADO ESTO (COMPRUEBA SI ES 0, EVITA MOSTRAR MENSAJE SI ES OPCIONAL Y COMPRUEBA QUE SEA UN ENTERO)
+            $mensajeError = "El campo no es un entero. ";
+        }else{ //AÑADIDO ESTO PARA QUE NO EVALÚE SI NO ES NECESARIO
+            if($integer>$max){
+                $mensajeError = $mensajeError."El número no puede ser mayor que ".$max.".";
+            }
+            if($integer<$min){
+                $mensajeError = $mensajeError."El número no puede ser menor que ".$min.".";
             }
         }
-        
         return $mensajeError;
     }
 
@@ -127,7 +120,7 @@ class validacionFormularios {  //ELIMINA EL METODO VALIDATEDATE Y LO INCLUYE EN 
 // Return null es correcto, si no muestra el mensaje de error
 // Si es un 1 es obligatorio, si es un 0 no lo es
     /**
-     * @author Javier Nieto y Cristina Núñez
+     * @author Christian Muñiz de la Huerga
      * @function comprobarFloat();
      * @param $float Número entero a comprobar
      * @param $max Valor máximo del entero
@@ -137,20 +130,19 @@ class validacionFormularios {  //ELIMINA EL METODO VALIDATEDATE Y LO INCLUYE EN 
      */
     public static function comprobarFloat($float, $max = PHP_FLOAT_MAX, $min = -PHP_FLOAT_MAX, $obligatorio = 0){  //AÑADIDOS VALORES POR DEFECTO Y AHORA DETECTA 0
         $mensajeError = null;
+        $valido = false;
         if ($obligatorio == 1 && $float != '0') {
             $mensajeError = self::comprobarNoVacio($float);
         }
-        
-        if(($obligatorio == 0 && $float!=null) || ($obligatorio == 1 && empty($mensajeError))){//COMPROBAMOS QUE SI ES OPCIONAL, NO ESTÉ VACÍO Y SI ES OBLIGATORIO QUE NO HAYA GUARDADO UN MENSAJE DE ERROR ANTERIOR (QUE EL CAMPO NO ESTÉ VACÍO)   
-            if (!is_numeric($float)) {//SI NO ES UN NÚMERO O STRING NUMÉRICO
-                $mensajeError = "El campo no es un decimal. (Debe llevar punto(.) entre la parte entera y la parte decimal)";   
-            }else{
-                if($float>$max){
-                    $mensajeError = $mensajeError."El número no puede ser mayor que ".$max.".";
-                }
-                if($float<$min){
-                    $mensajeError = $mensajeError."El número no puede ser menor que ".$min.".";
-                }
+        $float = str_replace(',', '.', $float); //SIRVE PARA PERMITIR LAS COMAS COMO SEPARADOR (RECORDAR QUE hAY QUE HACER LA MISMA OPERACIÓN A LA HORA DE PROCESAR LOS DATOS)
+        if ($float != '0' && !empty($float) && !filter_var($float, FILTER_VALIDATE_FLOAT)) {  //HE VARIADO ESTO (COMPRUEBA SI ES 0, EVITA MOSTRAR MENSAJE SI ES OPCIONAL Y COMPRUEBA QUE SEA UN DECIMAL)
+            $mensajeError = "El campo no es un decimal. ";
+        }else{ //AÑADIDO ESTO PARA QUE NO EVALÚE SI NO ES NECESARIO
+            if($float>$max){
+                $mensajeError = $mensajeError."El número no puede ser mayor que ".$max.".";
+            }
+            if($float<$min){
+                $mensajeError = $mensajeError."El número no puede ser menor que ".$min.".";
             }
         }
         return $mensajeError;
@@ -258,7 +250,7 @@ class validacionFormularios {  //ELIMINA EL METODO VALIDATEDATE Y LO INCLUYE EN 
             $mensajeError = self::comprobarNoVacio($dni);
         }
         if(!is_numeric($letra) && is_numeric($numeros)){
-            if ((substr("TRWAGMYFPDXBNJZSQVHLCKE", $numeros % 23, 1) != $letra || strlen($letra) != 1 || strlen($numeros) != 8) && !empty($dni)) {
+            if ((substr("TRWAGMYFPDXBNJZSQVHLCKE", $numeros % 23, 1 != $letra) || strlen($letra) != 1 || strlen($numeros) != 8) && !empty($dni)) {
                 $mensajeError = " El DNI no es válido.";
             }
         }else{
@@ -292,40 +284,22 @@ class validacionFormularios {  //ELIMINA EL METODO VALIDATEDATE Y LO INCLUYE EN 
     // Valida el password, comprueba longitud y si al menos contiene una mayúscula y un número, si es opcional da por válido que sea correcto o este vacío, si es obligatorio solo da por válido que esté correcto
     /**
      * @function validarPassword();
-     * @author Javier Nieto y Cristina Núñez
-	 * @since 30/11/2020
+     * @author Mario Casquero Jañez
      * @param $passwd cadena a comprobar.
-     * @param $maximo valor que indica la longitud máxima de la contraseña
      * @param $minimo valor que indica la longitud mínima de la contraseña
-     * @param $tipo valor que el tipo de la contraseña, su complejidad, siendo 1 si admite solo letras, 2 si admite numeros y letras y 3 si contiene al menos una letra mayúscula y un número 
      * @param $obligatorio valor booleano indicado mediante 1, si es obligatorio o 0 si no lo es.
      * @return null|string Devuelve null si es correcto o un mensaje de error en caso de que lo haya.
      */
-    public static function validarPassword($passwd, $maximo=16, $minimo = 2, $tipo=3, $obligatorio = 1) {  //CAMBIADO ORDEN DE LOS PARAMETROS, AÑADIDOS PARAMETROS PREDEFINIDOS Y MEJORADA LA RESPUESTA
+    public static function validarPassword($passwd, $minimo = 2, $obligatorio = 0) {  //CAMBIADO ORDEN DE LOS PARAMETROS, AÑADIDOS PARAMETROS PREDEFINIDOS Y MEJORADA LA RESPUESTA
         $mensajeError = null;
         if ($obligatorio == 1) {
             $mensajeError = self::comprobarNoVacio($passwd); 
         }
         if (strlen($passwd) < $minimo && !empty($passwd)){
-            $mensajeError = " La contraseña debe ser de al menos " . $minimo . " caracteres.";
+            $mensajeError = " La contraseña debe ser del al menos " . $minimo . " caracteres.";
         }
-        if (strlen($passwd) > $maximo && !empty($passwd)){
-            $mensajeError = " La contraseña debe tener como maximo " . $maximo . " caracteres.";
-        }
-        if(!empty($passwd) && $mensajeError==null){
-            switch ($tipo){
-                case 1:
-                    $mensajeError = self::comprobarAlfabetico($passwd, $maximo, $minimo, $obligatorio);
-                    break;
-                case 2:
-                    $mensajeError = self::comprobarAlfaNumerico($passwd, $maximo, $minimo, $obligatorio);
-                    break;
-                case 3:
-                    if ((!preg_match("`[A-Z]`", $passwd) || !preg_match("`[0-9]`", $passwd)) && !empty($passwd)) {
-                        $mensajeError .= " La contraseña debe contener una mayúscula y un número.";
-                    }
-                    break;
-            }
+        if ((!preg_match("`[A-Z]`", $passwd) || !preg_match("`[0-9]`", $passwd)) && !empty($passwd)) {
+            $mensajeError .= " La contraseña debe contener una mayúscula y un número.";
         }
         
         return $mensajeError;
@@ -421,7 +395,8 @@ class validacionFormularios {  //ELIMINA EL METODO VALIDATEDATE Y LO INCLUYE EN 
      */
     public static function validarElementoEnLista($elementoElegido, $aOpciones) {   //NO TIENE SENTIDO HACER UNA LISTA NO OBLIGATORIA
         $mensajeError = null; //Inicializa el mensaje de error a null.
-
+        
+        
         if (!in_array($elementoElegido, $aOpciones)) { 
             $mensajeError = " El elemento no se encuentra entre los posibles valores.";
         }
@@ -436,21 +411,18 @@ class validacionFormularios {  //ELIMINA EL METODO VALIDATEDATE Y LO INCLUYE EN 
      * @param $obligatorio Valor booleano indicado mediante 1, si es obligatorio o 0 si no lo es. 
      * @return null -> Si la variable errores es null o en su defecto contiene tan sólo espacios en blanco
      * $mensajeError -> Que contiene una cadena con los errores que han surgido concatenados.
-     * @since 2020-10-19
-     * @author Luis Puente Fernández
-     * @version 1.4 Corregido la variable en la que se almacena el mensaje de error en caso de estar vacio la cual era distinta a la que se devolvía, tambien se ha cambiado el nombre de la variable mensaje a mensajeError, que es mas descriptivo
      */
     
     public static function validaTelefono($tel, $obligatorio = 0){ //AÑADIDO PARAMETRO POR DEFECTO, MEJORADA LA FUNCIONALIDAD Y LA SALIDA
-        $mensajeError=null;
-        $patron="/^[6|7|9][0-9]{8}$/";
+        $mensaje=null;
+        $patron="/^[9|6|7][0-9]{8}$/";
          if ($obligatorio == 1) {
             $mensajeError = self::comprobarNoVacio($tel);
         }
         if (!preg_match($patron, $tel) && !empty($tel)) {
-            $mensajeError .= " El telefono debe comenzar por 6,7 o 9 y a continuación 8 dígitos del 0 al 9.";
+            $mensaje .= " El telefono debe comenzar por 9,6 o 7 y a continuación 8 diígitos del 0 al 9.";
         }
-        return $mensajeError; 
+        return $mensaje; 
     }
 }
 
